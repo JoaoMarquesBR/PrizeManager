@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
+import { IITem } from 'src/app/Models/IITem';
+import { ItemService } from 'src/app/services/item/item.service';
 
 
 interface Column {
@@ -19,47 +21,36 @@ export class ItemPageComponent implements OnInit {
 
   cols!: Column[];
 
+  name: string = "";
+
   price: number = 0.00;
 
   visible: boolean = false;
 
-  constructor() { }
+  itemList !: IITem[];
+
+
+  constructor(private itemServ: ItemService) { }
 
   ngOnInit() {
-    this.files = [
-      {
-        data: { name: '10000 Arcade Credits', price: 10, winrate: 40 },
-      },
-      {
-        data: { name: 'Membership Cards', price: 50, winrate: 5 },
-      },
-      {
-        data: { name: '1 Hour Arcade Pass', price: 15, winrate: 60 },
-      },
-      {
-        data: { name: 'Trampoline Jumping Session', price: 12, winrate: 75 },
-      },
-      {
-        data: { name: 'Combo Package (Arcade + Trampoline)', price: 25, winrate: 50 },
-      },
-      {
-        data: { name: 'VIP Membership', price: 150, winrate: 10 },
-      },
-      {
-        data: { name: 'Arcade Prize Tickets (1000)', price: 5, winrate: 30 },
-      },
-      {
-        data: { name: 'Trampoline Party Package', price: 200, winrate: 20 },
-      },
-      {
-        data: { name: 'Family Fun Pass (Arcade + Trampoline)', price: 60, winrate: 45 },
-      },
-      {
-        data: { name: 'Arcade Game Tokens (50)', price: 8, winrate: 55 },
-      },
-      // Add more items as needed
-    ];
-    console.log(this.files)
+
+    this.itemServ.GetAllItems().subscribe(data => {
+      this.itemList = data
+
+      for (const item of this.itemList) {
+        console.log("group name " + item.itemId + "  " + item.name + " " + item.price)
+      }
+
+      this.files = this.itemList.map(item => ({
+        data: {
+          name: item.name,
+          price: item.price,
+          itemId: item.itemId
+        },
+      }));
+
+    })
+
 
     this.cols = [
       { field: 'name', header: 'Name' },
@@ -68,8 +59,22 @@ export class ItemPageComponent implements OnInit {
     ];
   }
 
+  registerItem() {
+    console.log(this.price)
+    console.log(this.name)
+
+    const requestBody = {
+      "itemName": this.name,
+      "price": this.price
+    }
+
+    this.itemServ.registerItem(requestBody).subscribe(resp => {
+      console.log(resp)
+    });
+
+  }
+
   showDialog() {
-    console.log("hi")
     this.visible = true;
   }
 

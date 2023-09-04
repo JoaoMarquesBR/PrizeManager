@@ -18,17 +18,21 @@ import { PickListModule } from 'primeng/picklist';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ItemPageComponent } from './components/views/item-page/item-page.component';
 import { GroupsPageComponent } from './components/views/groups-page/groups-page.component';
-
+import { DashboardComponent } from './components/views/dashboard/dashboard.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ItemPageComponent,
     NavbarComponent,
-    GroupsPageComponent
+    GroupsPageComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     TreeTableModule,
     AppRoutingModule,
@@ -39,7 +43,8 @@ import { GroupsPageComponent } from './components/views/groups-page/groups-page.
     CalendarModule,
     FormsModule,
     PickListModule,
-    InputNumberModule
+    InputNumberModule,
+    InputTextModule
 
   ],
   providers: [],

@@ -19,7 +19,7 @@
 
                         <div>
                             <label for="name">Name</label>
-                            <input type="text" placeholder="Prize Name" />
+                            <input [(ngModel)]="name" type="text" placeholder="Prize Name" />
                         </div>
 
                         <div>
@@ -29,8 +29,8 @@
                             </p-inputNumber>
                         </div>
 
-                        <p>teste</p>
-
+                        <button pButton pRipple label="Submit" (click)="registerItem()"
+                            class="p-button-success"></button>
 
                     </p-dialog>
                 </th>
@@ -49,7 +49,9 @@
                         [style]="{ 'margin-right': '.5em' }"></p-button>
                     <p-button icon="pi pi-pencil" styleClass="p-button-warning"></p-button>
                 </td>
+
             </tr>
+
         </ng-template>
         <!-- <ng-template pTemplate="summary">
             <div style="text-align:left">

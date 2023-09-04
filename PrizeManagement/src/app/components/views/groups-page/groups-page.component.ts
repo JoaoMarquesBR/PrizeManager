@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { TreeNode } from 'primeng/api';
-
+import { GroupService } from 'src/app/services/group/group.service';
+import { IGroup } from 'src/app/Models/IGroup';
 interface Column {
   field: string;
   header: string;
@@ -41,47 +42,37 @@ export class GroupsPageComponent implements OnInit {
 
   date: Date | undefined;
 
-  visible: boolean = false;
+  groupName: string | undefined;
+
+  visible: boolean = true;
 
   sourceProducts!: Product[];
 
   targetProducts!: Product[];
 
-  constructor() { }
+
+  groupList !: IGroup[];
+
+  constructor(private grpServ: GroupService) { }
 
   ngOnInit() {
-    this.files = [
-      {
-        data: { name: '2022 Summer Camp', date: '10/03/2023', participants: 20 },
-      },
-      {
-        data: { name: 'School Trip', date: '05/15/2023', participants: 30 },
-      },
-      {
-        data: { name: 'Birthday Party', date: '08/20/2023', participants: 15 },
-      },
-      {
-        data: { name: 'Family Gathering', date: '11/05/2023', participants: 12 },
-      },
-      {
-        data: { name: 'Community Event', date: '09/18/2023', participants: 50 },
-      },
-      {
-        data: { name: 'Playdate Group', date: '07/10/2023', participants: 8 },
-      },
-      {
-        data: { name: 'After-School Club', date: '12/12/2023', participants: 25 },
-      },
-      {
-        data: { name: 'Team Building', date: '06/25/2023', participants: 40 },
-      },
-      {
-        data: { name: 'Holiday Celebration', date: '12/24/2023', participants: 18 },
-      },
-      {
-        data: { name: 'Scout Troop', date: '04/02/2023', participants: 22 },
-      },
-    ];
+
+    this.grpServ.getAllGroups().subscribe(data => {
+      this.groupList = data
+      console.log(this.groupList)
+      for (const group of this.groupList) {
+        console.log("group name " + group.groupName)
+      }
+
+      this.files = this.groupList.map(group => ({
+        data: {
+          name: group.groupName,
+          date: group.createdDate,
+          participants: 1
+        },
+      }));
+
+    })
 
     this.sourcePrize = [
       {
@@ -106,6 +97,17 @@ export class GroupsPageComponent implements OnInit {
     ];
 
     this.populateItems();
+  }
+
+  registerGroup() {
+    const requestBody = {
+      "groupName": this.groupName,
+      "date": this.date?.toISOString(),
+    }
+
+    this.grpServ.registerGroup(requestBody).subscribe(res => {
+      console.log(res)
+    })
   }
 
 
@@ -178,7 +180,6 @@ export class GroupsPageComponent implements OnInit {
   }
 
   showDialog() {
-    console.log("hi")
     this.visible = true;
   }
 
