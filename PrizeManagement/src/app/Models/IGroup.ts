@@ -1,5 +1,5 @@
 export interface IGroup {
-    promotionGroupId: number,
-    groupName: string,
-    createdDate: Date
+    promotionGroupId: number | undefined,
+    groupName: string | undefined,
+    createdDate: Date | undefined
 }

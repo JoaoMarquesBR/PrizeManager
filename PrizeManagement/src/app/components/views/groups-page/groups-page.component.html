@@ -25,17 +25,16 @@
                                 </div>
 
                                 <div class="card" style="width: 100%">
-                                    <p-pickList [source]="sourcePrize" [target]="targetProducts"
-                                        sourceHeader="Available" targetHeader="Selected" [dragdrop]="true"
-                                        [responsive]="true" [sourceStyle]="{ height: '16rem' }"
-                                        [targetStyle]="{ height: '16rem' }" filterBy="name"
-                                        sourceFilterPlaceholder="Search by name"
+                                    <p-pickList [source]="sourceItems" [target]="targetItems" sourceHeader="Available"
+                                        targetHeader="Selected" [dragdrop]="true" [responsive]="true"
+                                        [sourceStyle]="{ height: '16rem' }" [targetStyle]="{ height: '16rem' }"
+                                        filterBy="name" sourceFilterPlaceholder="Search by name"
                                         targetFilterPlaceholder="Search by name" breakpoint="800px">
                                         <ng-template let-product pTemplate="item">
                                             <div class="flex flex-wrap p-2 align-items-center gap-3">
-                                                <img class="w-4rem shadow-2 flex-shrink-0 border-round"
+                                                <!-- <img class="w-4rem shadow-2 flex-shrink-0 border-round"
                                                     src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                                                    alt="{product img}" />
+                                                    alt="{product img}" /> -->
                                                 <div class="flex-1 flex flex-column gap-2">
                                                     <span class="font-bold">{{ product.name }}</span>
                                                     <div class="flex align-products-center gap-2">
@@ -63,8 +62,53 @@
                         {{ rowData[col.field] }}
                     </td>
                     <td>
-                        <p-button icon="pi pi-search" styleClass="p-button-success"
+                        <p-button (click)="visualizeGroup(rowData)" icon="pi pi-search" styleClass="p-button-success"
                             [style]="{ 'margin-right': '.5em' }"></p-button>
+                        <p-dialog header="Group (group-name)" [(visible)]="viewvisible"
+                            [style]="{width: '70vw', height:'50vw'}">
+                            <div class="groupDialog">
+
+                                <div class="form-group">
+                                    <label for="groupName"><strong>Group</strong></label>
+                                    <label for="groupName-display"><strong>{{selectedGroup?.groupName}}</strong></label>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="entryDate"><strong>Date</strong></label>
+                                    <label
+                                        for="groupName-display"><strong>{{selectedGroup?.createdDate}}</strong></label>
+                                </div>
+
+                                <div class="card" style="width: 100%">
+                                    <p-pickList [source]="sourceItems" [target]="targetItems" sourceHeader="Available"
+                                        targetHeader="Selected" [dragdrop]="true" [responsive]="true"
+                                        [sourceStyle]="{ height: '16rem' }" [targetStyle]="{ height: '16rem' }"
+                                        filterBy="name" sourceFilterPlaceholder="Search by name"
+                                        targetFilterPlaceholder="Search by name" breakpoint="800px">
+                                        <ng-template let-product pTemplate="item">
+                                            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                                                <!-- <img class="w-4rem shadow-2 flex-shrink-0 border-round"
+                                                                            src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+                                                                            alt="{product img}" /> -->
+                                                <div class="flex-1 flex flex-column gap-2">
+                                                    <span class="font-bold">{{ product.name }}</span>
+                                                    <div class="flex align-products-center gap-2">
+                                                        <i class="pi pi-tag text-sm"></i>
+                                                        <span>%{{ product.winrate }}</span>
+                                                    </div>
+                                                </div>
+                                                <span class="font-bold text-900">{{ '$' + product.price }}</span>
+                                            </div>
+                                        </ng-template>
+                                    </p-pickList>
+                                </div>
+
+                                <button pButton pRipple label="Submit" (click)="registerGroup()"
+                                    class="p-button-success"></button>
+                            </div>
+                        </p-dialog>
+
                         <p-button icon="pi pi-pencil" styleClass="p-button-warning"></p-button>
                     </td>
                 </tr>
