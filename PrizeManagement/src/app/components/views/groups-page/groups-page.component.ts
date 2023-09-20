@@ -67,6 +67,7 @@ export class GroupsPageComponent implements OnInit {
 
     this.grpServ.getAllGroups().subscribe(data => {
       this.groupList = data
+      console.log(this.groupList)
 
       this.files = this.groupList.map(group => ({
         data: {

@@ -1,10 +1,4 @@
 <div class="card">
-
-
-
-
-
-
     <p-treeTable [value]="files" [columns]="cols" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}">
         <ng-template pTemplate="caption"> Prizes </ng-template>
         <ng-template pTemplate="header" let-columns>
@@ -26,6 +20,12 @@
                             <label for="price">Price</label>
                             <p-inputNumber [(ngModel)]="price" inputId="currency-us" mode="currency" currency="USD"
                                 locale="en-US">
+                            </p-inputNumber>
+                        </div>
+
+                        <div>
+                            <label for="winrate">WinRate</label>
+                            <p-inputNumber [(ngModel)]="winrate" inputId="winrate">
                             </p-inputNumber>
                         </div>
 
@@ -53,10 +53,10 @@
             </tr>
 
         </ng-template>
-        <!-- <ng-template pTemplate="summary">
+        <ng-template pTemplate="summary">
             <div style="text-align:left">
                 <p-button icon="pi pi-refresh" label="Reload"></p-button>
             </div>
-        </ng-template> -->
+        </ng-template>
     </p-treeTable>
 </div>

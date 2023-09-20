@@ -29,6 +29,8 @@ export class ItemPageComponent implements OnInit {
 
   itemList !: IITem[];
 
+  winrate !: number;
+
 
   constructor(private itemServ: ItemService) { }
 
@@ -38,14 +40,15 @@ export class ItemPageComponent implements OnInit {
       this.itemList = data
 
       for (const item of this.itemList) {
-        console.log("group name " + item.itemId + "  " + item.name + " " + item.price)
+        console.log("group name " + item.winrate + "  " + item.name + " " + item.price)
       }
 
       this.files = this.itemList.map(item => ({
         data: {
           name: item.name,
           price: item.price,
-          itemId: item.itemId
+          itemId: item.itemId,
+          winrate: "%" + item.winrate
         },
       }));
 
@@ -65,7 +68,8 @@ export class ItemPageComponent implements OnInit {
 
     const requestBody = {
       "itemName": this.name,
-      "price": this.price
+      "price": this.price,
+      "winrate": this.winrate
     }
 
     this.itemServ.registerItem(requestBody).subscribe(resp => {
