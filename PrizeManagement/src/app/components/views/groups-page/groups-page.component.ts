@@ -38,6 +38,8 @@ export interface Product {
 export class GroupsPageComponent implements OnInit {
   files!: TreeNode[];
 
+  originalSourceItems!: IITem[];
+
   sourceItems!: IITem[];
 
   targetItems!: IITem[];
@@ -67,13 +69,12 @@ export class GroupsPageComponent implements OnInit {
 
     this.grpServ.getAllGroups().subscribe(data => {
       this.groupList = data
-      console.log(this.groupList)
 
       this.files = this.groupList.map(group => ({
         data: {
           groupName: group.groupName,
           createdDate: group.createdDate,
-          participants: 1,
+          participants: group.participants,
           promotionGroupId: group.promotionGroupId
         },
       }));
@@ -110,7 +111,7 @@ export class GroupsPageComponent implements OnInit {
 
   populateItems() {
     this.itemServ.GetAllItems().subscribe(data => {
-      this.sourceItems = data
+      this.originalSourceItems = data
     })
 
     this.targetItems = []
@@ -118,16 +119,43 @@ export class GroupsPageComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
+    this.targetItems = []
+    this.sourceItems = this.originalSourceItems
+
   }
 
-  visualizeGroup(columnValue: IGroup) {
+  editGroup(columnValue: IGroup) {
     this.selectedGroup = columnValue
-    console.log(columnValue)
-    console.log(this.selectedGroup)
+
+
+    //pushing from the original List we can get the values that were not populated in the HTML page.
+    let originalGroupSelected = this.groupList.find(x => x.promotionGroupId == this.selectedGroup.promotionGroupId)
+
+
+    this.targetItems = originalGroupSelected?.itemList || []
+    this.sourceItems = this.originalSourceItems
+
+    this.sourceItems = this.sourceItems.filter(sourceItem =>
+      !this.targetItems.some(targetItem => targetItem.itemId === sourceItem.itemId)
+    );
 
     this.viewvisible = true;
   }
 
+  updateGroup() {
+
+    const requestBody = {
+      "groupId": this.selectedGroup.promotionGroupId,
+      "groupName": this.selectedGroup.groupName,
+      "itemsId": this.targetItems.map(x => x.itemId)
+    }
+    this.grpServ.updateGroup(requestBody).subscribe(res => {
+      console.log(res)
+    })
+
+    this.viewvisible = false;
+
+  }
 
 
 

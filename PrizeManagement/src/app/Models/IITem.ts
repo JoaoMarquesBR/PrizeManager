@@ -1,6 +1,6 @@
 export interface IITem {
     itemId: number;
     name: string;
-    winrate: string;
+    winrate: number;
     price: number;
 }

@@ -19,4 +19,8 @@ export class GroupService {
   registerGroup(req: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}Group/Add`, req);
   }
+
+  updateGroup(req: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}Group/Update`, req);
+  }
 }

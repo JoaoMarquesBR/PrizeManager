@@ -62,7 +62,7 @@
                         {{ rowData[col.field] }}
                     </td>
                     <td>
-                        <p-button (click)="visualizeGroup(rowData)" icon="pi pi-search" styleClass="p-button-success"
+                        <p-button icon="pi pi-search" styleClass="p-button-success"
                             [style]="{ 'margin-right': '.5em' }"></p-button>
                         <p-dialog header="Group (group-name)" [(visible)]="viewvisible"
                             [style]="{width: '70vw', height:'50vw'}">
@@ -104,12 +104,13 @@
                                     </p-pickList>
                                 </div>
 
-                                <button pButton pRipple label="Submit" (click)="registerGroup()"
-                                    class="p-button-success"></button>
+                                <button pButton pRipple label="Update" (click)="updateGroup()"
+                                    class="p-button-warning"></button>
                             </div>
                         </p-dialog>
 
-                        <p-button icon="pi pi-pencil" styleClass="p-button-warning"></p-button>
+                        <p-button (click)="editGroup(rowData)" icon="pi pi-pencil"
+                            styleClass="p-button-warning"></p-button>
                     </td>
                 </tr>
             </ng-template>
